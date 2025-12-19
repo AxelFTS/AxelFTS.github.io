@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Axel Fuentes - Développeur Full Stack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        background-color: #1a1a1a;
+        color: #e5e5e5;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* Header */
+      header {
+        padding: 80px 0 60px;
+        border-bottom: 1px solid #262626;
+      }
+
+      .header-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .profile-photo {
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #404040;
+      }
+
+      .header-text {
+        text-align: center;
+      }
+
+      .header-text h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 8px;
+      }
+
+      .header-text .title {
+        font-size: 1.25rem;
+        color: #a3a3a3;
+        margin-bottom: 16px;
+      }
+
+      .header-text .location {
+        font-size: 0.95rem;
+        color: #737373;
+      }
+
+      .header-text .intro {
+        font-size: 1rem;
+        color: #a3a3a3;
+        margin-top: 16px;
+        max-width: 500px;
+        line-height: 1.7;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .header-text .intro strong {
+        color: #e5e5e5;
+      }
+
+      .contact-links {
+        display: flex;
+        gap: 16px;
+        margin-top: 20px;
+        justify-content: center;
+      }
+
+      .contact-links a {
+        color: #e5e5e5;
+        text-decoration: none;
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        border: 1px solid #404040;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+      }
+
+      .contact-links a:hover {
+        background-color: #262626;
+        border-color: #525252;
+      }
+
+      /* Sections */
+      section {
+        padding: 40px 0;
+        border-bottom: 1px solid #262626;
+      }
+
+      section:last-of-type {
+        border-bottom: none;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #737373;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 32px;
+      }
+
+      /* Skills */
+      .skills-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .skill-tag {
+        background-color: #242424;
+        border: 1px solid #333;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        color: #d4d4d4;
+      }
+
+      .skill-tag.primary {
+        background-color: #172554;
+        border-color: #1e40af;
+        color: #93c5fd;
+      }
+
+      /* Experience */
+      .experience-item {
+        margin-bottom: 48px;
+      }
+
+      .experience-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .experience-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .experience-company {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #ffffff;
+      }
+
+      .experience-date {
+        font-size: 0.9rem;
+        color: #737373;
+      }
+
+      .experience-role {
+        font-size: 1rem;
+        color: #a3a3a3;
+        margin-bottom: 16px;
+      }
+
+      .experience-description {
+        color: #a3a3a3;
+        font-size: 0.95rem;
+      }
+
+      .experience-description ul {
+        list-style: none;
+        margin-top: 12px;
+      }
+
+      .experience-description li {
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 8px;
+      }
+
+      .experience-description li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: #525252;
+      }
+
+      .tech-used {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .tech-used span {
+        font-size: 0.8rem;
+        background-color: #262626;
+        padding: 4px 10px;
+        border-radius: 4px;
+        color: #a3a3a3;
+      }
+
+      /* Projects */
+      .project-item {
+        background-color: #242424;
+        border: 1px solid #333333;
+        border-radius: 12px;
+        padding: 28px;
+        margin-bottom: 20px;
+        transition: border-color 0.2s ease;
+      }
+
+      .project-item:hover {
+        border-color: #404040;
+      }
+
+      .project-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .project-name {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 8px;
+      }
+
+      .project-description {
+        color: #a3a3a3;
+        font-size: 0.95rem;
+        margin-bottom: 16px;
+      }
+
+      .project-links {
+        display: flex;
+        gap: 12px;
+      }
+
+      .project-links a {
+        font-size: 0.85rem;
+        color: #60a5fa;
+        text-decoration: none;
+      }
+
+      .project-links a:hover {
+        text-decoration: underline;
+      }
+
+      /* Footer */
+      footer {
+        padding: 40px 0;
+        text-align: center;
+        color: #525252;
+        font-size: 0.9rem;
+      }
+
+      footer a {
+        color: #737373;
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        color: #a3a3a3;
+      }
+
+      /* Recommendations */
+      .recommendation-item {
+        background-color: #242424;
+        border-left: 3px solid #3b82f6;
+        padding: 24px;
+        margin-bottom: 20px;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .recommendation-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .recommendation-text {
+        font-size: 1rem;
+        color: #d4d4d4;
+        font-style: italic;
+        line-height: 1.7;
+        margin-bottom: 12px;
+      }
+
+      .recommendation-author {
+        font-size: 0.9rem;
+        color: #737373;
+      }
+
+      /* Responsive */
+      @media (max-width: 640px) {
+        header {
+          padding: 48px 0 40px;
+        }
+
+        .header-content {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .header-text h1 {
+          font-size: 2rem;
+        }
+
+        .contact-links {
+          justify-content: center;
+        }
+
+        .experience-header {
+          flex-direction: column;
+        }
+
+        section {
+          padding: 40px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="header-content">
+          <img src="photo.png" alt="Axel Fuentes" class="profile-photo" />
+          <div class="header-text">
+            <h1>Axel Fuentes</h1>
+            <p class="title">Développeur Full Stack</p>
+            <p class="location">📍 Bordeaux, France · Disponible en remote</p>
+            <p class="intro">
+              Diplômé Epitech (Bac+5), je développe des applications web avec
+              <strong>Java Spring Boot</strong> et <strong>Angular</strong>.
+              J'interviens sur le développement de nouvelles fonctionnalités, la
+              maintenance, et l'intégration avec bases de données et services
+              externes. Disponible rapidement pour missions courtes ou longues.
+            </p>
+            <div class="contact-links">
+              <a href="mailto:fuentesaxel07@gmail.com">Email</a>
+              <a href="https://linkedin.com/in/axel-fuentes" target="_blank"
+                >LinkedIn</a
+              >
+              <a href="https://github.com/AxelFTS" target="_blank">GitHub</a>
+              <a href="https://malt.fr/profile/axelfuentes" target="_blank"
+                >Malt</a
+              >
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section>
+        <h2>Compétences</h2>
+        <div class="skills-grid">
+          <span class="skill-tag primary">Angular</span>
+          <span class="skill-tag primary">TypeScript</span>
+          <span class="skill-tag primary">Spring Boot</span>
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">SCSS</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">GitLab CI/CD</span>
+          <span class="skill-tag">Jira</span>
+          <span class="skill-tag">Méthode Agile</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Expériences</h2>
+
+        <div class="experience-item">
+          <div class="experience-header">
+            <span class="experience-company">Thales Service Numérique</span>
+            <span class="experience-date">Mars 2025 - Août 2025</span>
+          </div>
+          <p class="experience-role">
+            Développeur Full Stack - Client secteur énergie
+          </p>
+          <div class="experience-description">
+            <ul>
+              <li>
+                Conception et développement initial d'une application Angular
+              </li>
+              <li>Configuration de l'intégration continue via GitLab CI</li>
+              <li>Intégration du module de connexion sécurisé via OIDC</li>
+              <li>Automatisation des pipelines de déploiement</li>
+              <li>Optimisation des recherches et filtrage des données</li>
+              <li>Travail en équipe Agile (15+ personnes)</li>
+            </ul>
+          </div>
+          <div class="tech-used">
+            <span>Angular</span>
+            <span>TypeScript</span>
+            <span>SCSS</span>
+            <span>GitLab CI</span>
+            <span>OIDC</span>
+          </div>
+        </div>
+
+        <div class="experience-item">
+          <div class="experience-header">
+            <span class="experience-company">Gat Agencement</span>
+            <span class="experience-date">Avril 2022 - Août 2022</span>
+          </div>
+          <p class="experience-role">Développeur Web</p>
+          <div class="experience-description">
+            <ul>
+              <li>
+                Développement et maintenance d'un site pour la gamme Garofoli
+              </li>
+              <li>Collaboration avec les équipes UI/UX</li>
+              <li>Mise en place de tests pour assurer la qualité du code</li>
+            </ul>
+          </div>
+          <div class="tech-used">
+            <span>React</span>
+            <span>CSS</span>
+            <span>JavaScript</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Projets</h2>
+
+        <div class="project-item">
+          <h3 class="project-name">Freelance Manager</h3>
+          <p class="project-description">
+            Application de gestion pour freelances : suivi des missions,
+            facturation, gestion des clients et tableau de bord analytique.
+            Projet fullstack démontrant ma maîtrise de la stack Angular + Spring
+            Boot.
+          </p>
+          <div class="tech-used">
+            <span>Angular</span>
+            <span>Spring Boot</span>
+            <span>PostgreSQL</span>
+            <span>TypeScript</span>
+          </div>
+          <div class="project-links" style="margin-top: 16px">
+            <a
+              href="https://github.com/AxelFTS/freelance-manager"
+              target="_blank"
+              >→ Voir sur GitHub</a
+            >
+          </div>
+        </div>
+
+        <!-- Tu pourras ajouter d'autres projets ici après les missions de tes potes -->
+      </section>
+
+      <section>
+        <h2>Formation</h2>
+        <div class="experience-item">
+          <div class="experience-header">
+            <span class="experience-company">Epitech</span>
+            <span class="experience-date">Promotion 2025</span>
+          </div>
+          <p class="experience-role">
+            Expert en Technologies de l'Information (RNCP Niveau 7 - Bac+5)
+          </p>
+          <div class="experience-description">
+            <ul>
+              <li>Apprentissage par projets en autonomie et en équipe</li>
+              <li>Programmation C, C++, JavaScript, Python</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Recommandations</h2>
+        <div class="recommendation-item">
+          <p class="recommendation-text">
+            "Axel a démontré une forte capacité d’autonomie, une bonne
+            communication et un réel esprit d’équipe. Il a su s’adapter
+            rapidement aux méthodes agiles et livrer un travail de qualité sur
+            l’ensemble des phases du projet."
+          </p>
+          <p class="recommendation-author">
+            — Benoît Boisseau, Ingénieur développement logiciel, Thales Services
+            Numériques
+          </p>
+        </div>
+        <div class="recommendation-item">
+          <p class="recommendation-text">
+            "Axel a fait preuve de sérieux et d’engagement. Il a su s’intégrer
+            rapidement dans notre environnement technique et humain, et a
+            démontré une grande rigueur dans l’exécution de ses missions, tout
+            en faisant preuve d’initiative et d’autonomie."
+          </p>
+          <p class="recommendation-author">
+            — Isabelle Fernandes, Product Owner, EDF
+          </p>
+        </div>
+        <div class="recommendation-item">
+          <p class="recommendation-text">
+            "Axel s’est montré sérieux, impliqué et professionnel. Il a
+            nettement progressé au fil des mois, avec une accélération
+            remarquable sur les deux derniers mois, gagnant en autonomie, en
+            qualité de code et en maîtrise de notre stack Java Spring Boot /
+            Angular / CI/CD GitLab."
+          </p>
+          <p class="recommendation-author">
+            — Rémi Gomez, Leader Technique, Thales Service Numériques
+          </p>
+        </div>
+        <p style="margin-top: 16px; font-size: 0.9rem; color: #737373">
+          📄 Lettres de recommandation complètes disponibles sur demande.
+        </p>
+      </section>
+      <footer>
+        <p>TJM indicatif : 330€ / jour · Remote privilégié</p>
+        <p>Disponible pour des missions freelance</p>
+        <p style="margin-top: 16px; margin-bottom: 16px">
+          <a href="mailto:fuentesaxel07@gmail.com">fuentesaxel07@gmail.com</a> ·
+          <a href="tel:+33699817612">06 99 81 76 12</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
