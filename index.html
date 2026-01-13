@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="favicon.ico" />
@@ -21,121 +21,413 @@
       rel="stylesheet"
     />
     <style>
+      :root {
+        --bg-primary: #0a0a0f;
+        --bg-secondary: #12121a;
+        --bg-glass: rgba(255, 255, 255, 0.03);
+        --bg-glass-hover: rgba(255, 255, 255, 0.06);
+        --border-color: rgba(255, 255, 255, 0.08);
+        --border-hover: rgba(255, 255, 255, 0.15);
+        --text-primary: #ffffff;
+        --text-secondary: #a1a1aa;
+        --text-muted: #71717a;
+        --accent-primary: #6366f1;
+        --accent-secondary: #8b5cf6;
+        --accent-glow: rgba(99, 102, 241, 0.4);
+        --gradient-1: linear-gradient(
+          135deg,
+          #6366f1 0%,
+          #8b5cf6 50%,
+          #a855f7 100%
+        );
+        --gradient-2: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        --shadow-glow: 0 0 60px rgba(99, 102, 241, 0.15);
+      }
+
+      [data-theme="light"] {
+        --bg-primary: #f8f7ff;
+        --bg-secondary: #ffffff;
+        --bg-glass: rgba(255, 255, 255, 0.8);
+        --bg-glass-hover: rgba(255, 255, 255, 0.95);
+        --border-color: rgba(99, 102, 241, 0.15);
+        --border-hover: rgba(99, 102, 241, 0.3);
+        --text-primary: #18181b;
+        --text-secondary: #52525b;
+        --text-muted: #71717a;
+        --accent-primary: #6366f1;
+        --accent-secondary: #8b5cf6;
+        --accent-glow: rgba(99, 102, 241, 0.15);
+        --shadow-glow: 0 4px 30px rgba(99, 102, 241, 0.12);
+      }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
 
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-        background-color: #1a1a1a;
-        color: #e5e5e5;
+        background-color: var(--bg-primary);
+        color: var(--text-secondary);
         line-height: 1.6;
+        overflow-x: hidden;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* Animated background */
+      .bg-gradient {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      .bg-gradient::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+            circle at 20% 80%,
+            var(--accent-glow) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(139, 92, 246, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 40% 40%,
+            rgba(59, 130, 246, 0.1) 0%,
+            transparent 40%
+          );
+        animation: gradientMove 20s ease-in-out infinite;
+      }
+
+      @keyframes gradientMove {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+          transform: translate(2%, 2%) rotate(1deg);
+        }
+        50% {
+          transform: translate(-1%, 3%) rotate(-1deg);
+        }
+        75% {
+          transform: translate(3%, -2%) rotate(2deg);
+        }
       }
 
       .container {
         max-width: 900px;
         margin: 0 auto;
         padding: 0 24px;
+        position: relative;
+      }
+
+      /* Theme toggle */
+      .theme-toggle {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 100;
+        background: var(--bg-glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-glass-hover);
+        border-color: var(--border-hover);
+        transform: scale(1.05);
+      }
+
+      .theme-toggle .icon-sun,
+      .theme-toggle .icon-moon {
+        position: absolute;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      [data-theme="dark"] .theme-toggle .icon-sun {
+        opacity: 1;
+        transform: rotate(0deg);
+      }
+      [data-theme="dark"] .theme-toggle .icon-moon {
+        opacity: 0;
+        transform: rotate(-90deg);
+      }
+      [data-theme="light"] .theme-toggle .icon-sun {
+        opacity: 0;
+        transform: rotate(90deg);
+      }
+      [data-theme="light"] .theme-toggle .icon-moon {
+        opacity: 1;
+        transform: rotate(0deg);
       }
 
       /* Header */
       header {
-        padding: 80px 0 60px;
-        border-bottom: 1px solid #262626;
-      }
-
-      .header-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .profile-photo {
-        width: 250px;
-        height: 250px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 4px solid #404040;
-      }
-
-      .header-text {
+        padding: 80px 0 40px;
         text-align: center;
       }
 
+      .profile-wrapper {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 32px;
+      }
+
+      .profile-photo {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--accent-primary);
+        box-shadow: var(--shadow-glow), 0 0 0 8px rgba(99, 102, 241, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .profile-photo:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-glow), 0 0 0 12px rgba(99, 102, 241, 0.15);
+      }
+
+      .profile-ring {
+        position: absolute;
+        top: -12px;
+        left: -12px;
+        right: -12px;
+        bottom: -12px;
+        border-radius: 50%;
+        border: 2px solid var(--accent-primary);
+        opacity: 0.4;
+        animation: pulse 3s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 0.3;
+        }
+      }
+
       .header-text h1 {
-        font-size: 2.5rem;
+        font-size: 3rem;
         font-weight: 700;
-        color: #ffffff;
+        color: var(--text-primary);
         margin-bottom: 8px;
+        letter-spacing: -0.02em;
       }
 
       .header-text .title {
         font-size: 1.25rem;
-        color: #a3a3a3;
+        background: var(--gradient-1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 600;
         margin-bottom: 16px;
       }
 
       .header-text .location {
         font-size: 0.95rem;
-        color: #737373;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        background: #22c55e;
+        border-radius: 50%;
+        animation: statusPulse 2s ease-in-out infinite;
+      }
+
+      @keyframes statusPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+        }
       }
 
       .header-text .intro {
-        font-size: 1rem;
-        color: #a3a3a3;
-        margin-top: 16px;
-        max-width: 500px;
-        line-height: 1.7;
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        margin-top: 24px;
+        max-width: 550px;
+        line-height: 1.8;
         margin-left: auto;
         margin-right: auto;
       }
 
       .header-text .intro strong {
-        color: #e5e5e5;
+        color: var(--text-primary);
+        font-weight: 600;
       }
 
       .contact-links {
         display: flex;
-        gap: 16px;
-        margin-top: 20px;
+        gap: 12px;
+        margin-top: 32px;
         justify-content: center;
+        flex-wrap: wrap;
       }
 
       .contact-links a {
-        color: #e5e5e5;
+        color: var(--text-primary);
         text-decoration: none;
         font-size: 0.9rem;
-        padding: 8px 16px;
-        border: 1px solid #404040;
-        border-radius: 6px;
-        transition: all 0.2s ease;
+        font-weight: 500;
+        padding: 12px 24px;
+        background: var(--bg-glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .contact-links a::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transition: left 0.5s ease;
       }
 
       .contact-links a:hover {
-        background-color: #262626;
-        border-color: #525252;
+        background: var(--bg-glass-hover);
+        border-color: var(--accent-primary);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 40px rgba(99, 102, 241, 0.2);
+      }
+
+      .contact-links a:hover::before {
+        left: 100%;
+      }
+
+      .contact-links a.primary {
+        background: var(--gradient-1);
+        border: none;
+        color: white;
+      }
+
+      .contact-links a.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 40px var(--accent-glow);
       }
 
       /* Sections */
       section {
-        padding: 40px 0;
-        border-bottom: 1px solid #262626;
+        padding: 24px 0;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.6s ease forwards;
       }
 
-      section:last-of-type {
-        border-bottom: none;
+      section:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      section:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+      section:nth-child(4) {
+        animation-delay: 0.3s;
+      }
+      section:nth-child(5) {
+        animation-delay: 0.4s;
+      }
+      section:nth-child(6) {
+        animation-delay: 0.5s;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       h2 {
-        font-size: 1.1rem;
+        font-size: 0.85rem;
         font-weight: 600;
-        color: #737373;
+        color: var(--accent-primary);
         text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 32px;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      h2::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--border-color), transparent);
+      }
+
+      /* Glass card */
+      .glass-card {
+        background: var(--bg-glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+      }
+
+      .glass-card:hover {
+        background: var(--bg-glass-hover);
+        border-color: var(--border-hover);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-glow);
       }
 
       /* Skills */
@@ -146,34 +438,51 @@
       }
 
       .skill-tag {
-        background-color: #242424;
-        border: 1px solid #333;
-        padding: 10px 18px;
-        border-radius: 8px;
+        background: var(--bg-glass);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        padding: 12px 20px;
+        border-radius: 10px;
         font-size: 0.95rem;
-        color: #d4d4d4;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        cursor: default;
+      }
+
+      .skill-tag:hover {
+        border-color: var(--accent-primary);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(99, 102, 241, 0.15);
       }
 
       .skill-tag.primary {
-        background-color: #172554;
-        border-color: #1e40af;
-        color: #93c5fd;
+        background: linear-gradient(
+          135deg,
+          rgba(99, 102, 241, 0.2) 0%,
+          rgba(139, 92, 246, 0.2) 100%
+        );
+        border-color: rgba(99, 102, 241, 0.3);
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      .skill-tag.primary:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(99, 102, 241, 0.3) 0%,
+          rgba(139, 92, 246, 0.3) 100%
+        );
+        border-color: var(--accent-primary);
       }
 
       /* Experience */
-      .experience-item {
-        margin-bottom: 48px;
-      }
-
-      .experience-item:last-child {
-        margin-bottom: 0;
-      }
-
       .experience-header {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
         flex-wrap: wrap;
         gap: 8px;
       }
@@ -181,23 +490,23 @@
       .experience-company {
         font-size: 1.2rem;
         font-weight: 600;
-        color: #ffffff;
+        color: var(--text-primary);
       }
 
       .experience-date {
-        font-size: 0.9rem;
-        color: #737373;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        background: var(--bg-glass);
+        padding: 4px 12px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
       }
 
       .experience-role {
         font-size: 1rem;
-        color: #a3a3a3;
+        color: var(--accent-primary);
         margin-bottom: 16px;
-      }
-
-      .experience-description {
-        color: #a3a3a3;
-        font-size: 0.95rem;
+        font-weight: 500;
       }
 
       .experience-description ul {
@@ -207,111 +516,114 @@
 
       .experience-description li {
         position: relative;
-        padding-left: 20px;
-        margin-bottom: 8px;
+        padding-left: 24px;
+        margin-bottom: 10px;
+        color: var(--text-secondary);
       }
 
       .experience-description li::before {
-        content: "→";
+        content: "";
         position: absolute;
         left: 0;
-        color: #525252;
+        top: 10px;
+        width: 6px;
+        height: 6px;
+        background: var(--gradient-1);
+        border-radius: 50%;
       }
 
       .tech-used {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-        margin-top: 16px;
+        margin-top: 20px;
       }
 
       .tech-used span {
-        font-size: 0.8rem;
-        background-color: #262626;
-        padding: 4px 10px;
-        border-radius: 4px;
-        color: #a3a3a3;
+        font-size: 0.75rem;
+        background: var(--bg-glass);
+        padding: 6px 12px;
+        border-radius: 6px;
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+        transition: all 0.2s ease;
+      }
+
+      .tech-used span:hover {
+        color: var(--text-primary);
+        border-color: var(--border-hover);
       }
 
       /* Projects */
       .project-item {
-        background-color: #242424;
-        border: 1px solid #333333;
-        border-radius: 12px;
-        padding: 28px;
-        margin-bottom: 20px;
-        transition: border-color 0.2s ease;
+        position: relative;
+        overflow: hidden;
       }
 
-      .project-item:hover {
-        border-color: #404040;
+      .project-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--gradient-1);
+        border-radius: 4px 0 0 4px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
       }
 
-      .project-item:last-child {
-        margin-bottom: 0;
+      .project-item:hover::before {
+        opacity: 1;
       }
 
       .project-name {
-        font-size: 1.15rem;
+        font-size: 1.2rem;
         font-weight: 600;
-        color: #ffffff;
-        margin-bottom: 8px;
+        color: var(--text-primary);
+        margin-bottom: 12px;
       }
 
       .project-description {
-        color: #a3a3a3;
+        color: var(--text-secondary);
         font-size: 0.95rem;
-        margin-bottom: 16px;
+        margin-bottom: 20px;
+        line-height: 1.7;
       }
 
       .project-links {
         display: flex;
-        gap: 12px;
+        gap: 16px;
+        margin-top: 16px;
       }
 
       .project-links a {
-        font-size: 0.85rem;
-        color: #60a5fa;
+        font-size: 0.9rem;
+        color: var(--accent-primary);
         text-decoration: none;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
       }
 
       .project-links a:hover {
-        text-decoration: underline;
-      }
-
-      /* Footer */
-      footer {
-        padding: 40px 0;
-        text-align: center;
-        color: #525252;
-        font-size: 0.9rem;
-      }
-
-      footer a {
-        color: #737373;
-        text-decoration: none;
-      }
-
-      footer a:hover {
-        color: #a3a3a3;
+        color: var(--accent-secondary);
+        transform: translateX(4px);
       }
 
       /* Recommendations */
       .recommendation-item {
-        background-color: #242424;
-        border-left: 3px solid #3b82f6;
-        padding: 24px;
-        margin-bottom: 20px;
-        border-radius: 0 8px 8px 0;
-      }
-
-      .recommendation-item:last-child {
-        margin-bottom: 0;
+        position: relative;
+        padding-left: 20px;
+        border-left: 3px solid var(--accent-primary);
+        margin-left: 4px;
       }
 
       .recommendation-text {
         font-size: 1rem;
-        color: #d4d4d4;
+        color: var(--text-secondary);
         font-style: italic;
         line-height: 1.7;
         margin-bottom: 12px;
@@ -319,78 +631,165 @@
 
       .recommendation-author {
         font-size: 0.9rem;
-        color: #737373;
+        color: var(--text-muted);
+      }
+
+      .recommendation-author strong {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      /* Footer */
+      footer {
+        padding: 40px 0;
+        text-align: center;
+      }
+
+      .footer-cta {
+        background: var(--bg-glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 32px;
+        margin-bottom: 20px;
+      }
+
+      .footer-cta h3 {
+        font-size: 1.5rem;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+      }
+
+      .footer-cta p {
+        color: var(--text-muted);
+        margin-bottom: 24px;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .footer-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: color 0.2s ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--accent-primary);
+      }
+
+      .copyright {
+        color: var(--text-muted);
+        font-size: 0.85rem;
       }
 
       /* Responsive */
       @media (max-width: 640px) {
         header {
-          padding: 48px 0 40px;
-        }
-
-        .header-content {
-          flex-direction: column;
-          text-align: center;
+          padding: 80px 0 60px;
         }
 
         .header-text h1 {
-          font-size: 2rem;
+          font-size: 2.2rem;
         }
 
-        .contact-links {
-          justify-content: center;
+        .profile-photo {
+          width: 140px;
+          height: 140px;
+        }
+
+        .glass-card {
+          padding: 20px;
         }
 
         .experience-header {
           flex-direction: column;
         }
 
-        section {
-          padding: 40px 0;
+        .contact-links {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .contact-links a {
+          width: 100%;
+          max-width: 280px;
+          text-align: center;
+        }
+
+        .theme-toggle {
+          top: 16px;
+          right: 16px;
+          width: 42px;
+          height: 42px;
+        }
+
+        .footer-cta {
+          padding: 32px 20px;
         }
       }
     </style>
   </head>
   <body>
+    <div class="bg-gradient"></div>
+
+    <button
+      class="theme-toggle"
+      onclick="toggleTheme()"
+      aria-label="Changer de thème"
+    >
+      <span class="icon-sun">☀️</span>
+      <span class="icon-moon">🌙</span>
+    </button>
+
     <div class="container">
       <header>
-        <div class="header-content">
+        <div class="profile-wrapper">
+          <div class="profile-ring"></div>
           <img src="photo.png" alt="Axel Fuentes" class="profile-photo" />
-          <div class="header-text">
-            <h1>Axel Fuentes</h1>
-            <p class="title">Développeur Full Stack</p>
-            <p class="location">
-              📍 Bordeaux, France · Disponible en télétravail
-            </p>
-            <p class="intro">
-              Développeur Full Stack (ex-Thales), je développe des applications
-              web avec
-              <strong>Java Spring Boot</strong> et <strong>Angular</strong>.
-              J'interviens sur le développement de nouvelles fonctionnalités, la
-              maintenance et l'intégration avec des bases de données et des
-              services externes.
-            </p>
-            <div class="contact-links">
-              <a href="mailto:fuentesaxel07@gmail.com">Email</a>
-              <a
-                href="https://linkedin.com/in/axel-fuentes"
-                target="_blank"
-                rel="noopener noreferrer"
-                >LinkedIn</a
-              >
-              <a
-                href="https://github.com/AxelFTS"
-                target="_blank"
-                rel="noopener noreferrer"
-                >GitHub</a
-              >
-              <a
-                href="https://malt.fr/profile/axelfuentes"
-                target="_blank"
-                rel="noopener noreferrer"
-                >Malt</a
-              >
-            </div>
+        </div>
+        <div class="header-text">
+          <h1>Axel Fuentes</h1>
+          <p class="title">Développeur Full Stack</p>
+          <p class="location">
+            <span class="status-dot"></span>
+            Disponible · Bordeaux, France
+          </p>
+          <p class="intro">
+            Ex-<strong>Thales</strong>, je conçois des applications web robustes
+            avec
+            <strong>Angular</strong> et <strong>Spring Boot</strong>. Du
+            développement de nouvelles features à l'intégration de services
+            complexes, je m'adapte à vos besoins.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:fuentesaxel07@gmail.com" class="primary"
+              >Me contacter</a
+            >
+            <a
+              href="https://linkedin.com/in/axel-fuentes"
+              target="_blank"
+              rel="noopener noreferrer"
+              >LinkedIn</a
+            >
+            <a
+              href="https://github.com/AxelFTS"
+              target="_blank"
+              rel="noopener noreferrer"
+              >GitHub</a
+            >
+            <a
+              href="https://malt.fr/profile/axelfuentes"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Malt</a
+            >
           </div>
         </div>
       </header>
@@ -414,13 +813,13 @@
       <section>
         <h2>Expériences</h2>
 
-        <div class="experience-item">
+        <div class="glass-card">
           <div class="experience-header">
             <span class="experience-company">Thales Services Numériques</span>
-            <span class="experience-date">Mars 2025 - Août 2025</span>
+            <span class="experience-date">Mars 2025 → Août 2025</span>
           </div>
           <p class="experience-role">
-            Développeur Full Stack - Client secteur énergie
+            Développeur Full Stack · Client secteur énergie
           </p>
           <div class="experience-description">
             <ul>
@@ -444,10 +843,10 @@
           </div>
         </div>
 
-        <div class="experience-item">
+        <div class="glass-card">
           <div class="experience-header">
             <span class="experience-company">GAT AGENCEMENT</span>
-            <span class="experience-date">Avril 2022 - Août 2022</span>
+            <span class="experience-date">Avril 2022 → Août 2022</span>
           </div>
           <p class="experience-role">Développeur Web</p>
           <div class="experience-description">
@@ -470,7 +869,7 @@
       <section>
         <h2>Projets</h2>
 
-        <div class="project-item">
+        <div class="glass-card project-item">
           <h3 class="project-name">Freelance Manager</h3>
           <p class="project-description">
             Application de gestion pour freelances : suivi des missions,
@@ -484,28 +883,27 @@
             <span>PostgreSQL</span>
             <span>TypeScript</span>
           </div>
-          <div class="project-links" style="margin-top: 16px">
+          <div class="project-links">
             <a
               href="https://github.com/AxelFTS/freelance-manager"
               target="_blank"
               rel="noopener noreferrer"
-              >→ Voir sur GitHub</a
             >
+              → Voir sur GitHub
+            </a>
           </div>
         </div>
-
-        <!-- Tu pourras ajouter d'autres projets ici après les missions de tes potes -->
       </section>
 
       <section>
         <h2>Formation</h2>
-        <div class="experience-item">
+        <div class="glass-card">
           <div class="experience-header">
             <span class="experience-company">Epitech</span>
             <span class="experience-date">Promotion 2025</span>
           </div>
           <p class="experience-role">
-            Expert en Technologies de l'Information (RNCP Niveau 7 - Bac+5)
+            Expert en Technologies de l'Information (Bac+5)
           </p>
           <div class="experience-description">
             <ul>
@@ -518,52 +916,105 @@
 
       <section>
         <h2>Recommandations</h2>
-        <div class="recommendation-item">
+
+        <div class="glass-card recommendation-item">
           <p class="recommendation-text">
-            "Axel a démontré une forte capacité d’autonomie, une bonne
-            communication et un réel esprit d’équipe. Il a su s’adapter
+            « Axel a démontré une forte capacité d'autonomie, une bonne
+            communication et un réel esprit d'équipe. Il a su s'adapter
             rapidement aux méthodes agiles et livrer un travail de qualité sur
-            l’ensemble des phases du projet."
+            l'ensemble des phases du projet. »
           </p>
           <p class="recommendation-author">
-            — Benoît Boisseau, Ingénieur développement logiciel, Thales Services
-            Numériques
+            <strong>Benoît Boisseau</strong> · Ingénieur développement logiciel,
+            Thales
           </p>
         </div>
-        <div class="recommendation-item">
+
+        <div class="glass-card recommendation-item">
           <p class="recommendation-text">
-            "Axel a fait preuve de sérieux et d’engagement. Il a su s’intégrer
+            « Axel a fait preuve de sérieux et d'engagement. Il a su s'intégrer
             rapidement dans notre environnement technique et humain, et a
-            démontré une grande rigueur dans l’exécution de ses missions, tout
-            en faisant preuve d’initiative et d’autonomie."
+            démontré une grande rigueur dans l'exécution de ses missions. »
           </p>
           <p class="recommendation-author">
-            — Isabelle Fernandes, Product Owner, EDF
+            <strong>Isabelle Fernandes</strong> · Product Owner, EDF
           </p>
         </div>
-        <div class="recommendation-item">
+
+        <div class="glass-card recommendation-item">
           <p class="recommendation-text">
-            "Axel s’est montré sérieux, impliqué et professionnel. Il a
-            nettement progressé au fil des mois, avec une accélération
-            remarquable sur les deux derniers mois, gagnant en autonomie, en
-            qualité de code et en maîtrise de notre stack Java Spring Boot /
-            Angular / CI/CD GitLab."
+            « Axel s'est montré sérieux, impliqué et professionnel. Il a
+            nettement progressé au fil des mois, gagnant en autonomie, en
+            qualité de code et en maîtrise de notre stack : Java Spring Boot /
+            Angular / CI/CD GitLab. »
           </p>
           <p class="recommendation-author">
-            — Rémi Gomez, Leader Technique, Thales Services Numériques
+            <strong>Rémi Gomez</strong> · Leader Technique, Thales
           </p>
         </div>
-        <p style="margin-top: 16px; font-size: 0.9rem; color: #737373">
-          📄 Lettres de recommandation complètes disponibles sur demande.
+
+        <p
+          style="
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-align: center;
+          "
+        >
+          Lettres de recommandation complètes disponibles sur demande
         </p>
       </section>
+
       <footer>
-        <p>Disponible pour des missions freelance</p>
-        <p style="margin-top: 16px; margin-bottom: 16px">
-          <a href="mailto:fuentesaxel07@gmail.com">fuentesaxel07@gmail.com</a> ·
-          <a href="tel:+33699817612">06 99 81 76 12</a>
-        </p>
+        <div class="footer-cta">
+          <h3>Un projet en tête ?</h3>
+          <p>Discutons de comment je peux vous aider</p>
+          <div class="footer-links">
+            <a href="mailto:fuentesaxel07@gmail.com">fuentesaxel07@gmail.com</a>
+            <span style="color: var(--text-muted)">·</span>
+            <a href="tel:+33699817612">06 99 81 76 12</a>
+          </div>
+        </div>
+        <p class="copyright">© 2025 Axel Fuentes</p>
       </footer>
     </div>
+
+    <script>
+      function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+        html.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+      }
+
+      // Load saved theme
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        document.documentElement.setAttribute("data-theme", savedTheme);
+      }
+
+      // Intersection Observer for scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".glass-card").forEach((card) => {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+        card.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        observer.observe(card);
+      });
+    </script>
   </body>
 </html>
