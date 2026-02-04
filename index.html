@@ -132,7 +132,7 @@
       }
 
       .container {
-        max-width: 900px;
+        max-width: 1024px;
         margin: 0 auto;
         padding: 0 24px;
         position: relative;
@@ -613,6 +613,104 @@
         transform: translateX(4px);
       }
 
+      /* Carousel */
+      .carousel {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        margin: 20px 0;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+      }
+
+      .carousel-track {
+        display: flex;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .carousel-track img {
+        min-width: 100%;
+        aspect-ratio: 2.17 / 1;
+        height: auto;
+        object-fit: cover;
+        display: block;
+      }
+
+      .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #fff;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: all 0.2s ease;
+        z-index: 2;
+      }
+
+      .carousel-btn:hover {
+        background: rgba(99, 102, 241, 0.6);
+        border-color: var(--accent-primary);
+      }
+
+      .carousel-btn.prev {
+        left: 10px;
+      }
+      .carousel-btn.next {
+        right: 10px;
+      }
+
+      .carousel-dots {
+        position: absolute;
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 2;
+      }
+
+      .carousel-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .carousel-dot.active {
+        background: var(--accent-primary);
+        width: 24px;
+        border-radius: 4px;
+        box-shadow: 0 0 8px var(--accent-glow);
+      }
+
+      [data-theme="light"] .carousel-btn {
+        background: rgba(255, 255, 255, 0.75);
+        color: var(--text-primary);
+        border-color: var(--border-color);
+      }
+
+      [data-theme="light"] .carousel-btn:hover {
+        background: rgba(99, 102, 241, 0.15);
+        color: var(--accent-primary);
+      }
+
+      [data-theme="light"] .carousel-dot {
+        background: rgba(0, 0, 0, 0.25);
+      }
+
       /* Recommendations */
       .recommendation-item {
         position: relative;
@@ -732,6 +830,10 @@
 
         .footer-cta {
           padding: 32px 20px;
+        }
+
+        .carousel-track img {
+          aspect-ratio: 2.17 / 1;
         }
       }
     </style>
@@ -871,12 +973,32 @@
 
         <div class="glass-card project-item">
           <h3 class="project-name">Freelance Manager</h3>
+          <h4 class="experience-role">En cours de développement</h4>
           <p class="project-description">
             Application de gestion pour freelances : suivi des missions,
             facturation, gestion des clients et tableau de bord analytique.
             Projet fullstack démontrant ma maîtrise de la stack Angular + Spring
             Boot.
           </p>
+          <div class="carousel">
+            <div class="carousel-track" id="carouselTrack">
+              <img src="Clients.png" alt="Freelance Manager – Clients" />
+              <img src="factures2.png" alt="Freelance Manager – Factures" />
+            </div>
+            <button class="carousel-btn prev" onclick="moveCarousel(-1)">
+              ‹
+            </button>
+            <button class="carousel-btn next" onclick="moveCarousel(1)">
+              ›
+            </button>
+            <div class="carousel-dots" id="carouselDots">
+              <button
+                class="carousel-dot active"
+                onclick="goToSlide(0)"
+              ></button>
+              <button class="carousel-dot" onclick="goToSlide(1)"></button>
+            </div>
+          </div>
           <div class="tech-used">
             <span>Angular</span>
             <span>Spring Boot</span>
@@ -1015,6 +1137,29 @@
         card.style.transition = "opacity 0.5s ease, transform 0.5s ease";
         observer.observe(card);
       });
+
+      // Carousel
+      let currentSlide = 0;
+      const totalSlides = 2;
+
+      function moveCarousel(direction) {
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        updateCarousel();
+      }
+
+      function goToSlide(index) {
+        currentSlide = index;
+        updateCarousel();
+      }
+
+      function updateCarousel() {
+        document.getElementById(
+          "carouselTrack"
+        ).style.transform = `translateX(-${currentSlide * 100}%)`;
+        document.querySelectorAll(".carousel-dot").forEach((dot, i) => {
+          dot.classList.toggle("active", i === currentSlide);
+        });
+      }
     </script>
   </body>
 </html>
